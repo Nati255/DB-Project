@@ -1,7 +1,7 @@
 
 ---
 
-# Project Report
+# Project Report - Stage 1
 
 
 ---
@@ -45,7 +45,7 @@ This system serves as a comprehensive database management tool for managing stud
      - F_Name: First name of the teacher.
      - L_Name: Last name of the teacher.
      - Title: Title or designation of the teacher.
-     - Level: Level or rank of the teacher (e.g., junior, senior).
+     - Rank: Level or rank of the teacher (e.g., junior, senior).
    - **Purpose:** Stores information about teachers' profiles, qualifications, and assignments.
 
 3. **Subject:**
@@ -69,7 +69,7 @@ This system serves as a comprehensive database management tool for managing stud
    - **Attributes:**
      - Subject_ID: Foreign key referencing the Subject table.
      - Teacher_ID: Foreign key referencing the Teacher table.
-     - DateAssign: Date of assignment.
+     - DateAssign: Date of joining to study a subject.
    - **Purpose:** Establishes relationships between teachers and subjects they are assigned to teach.
 
 6. **Class:**
@@ -88,7 +88,6 @@ This system serves as a comprehensive database management tool for managing stud
    - **Attributes:**
      - Schedule_ID: Unique identifier for each schedule entry.
      - ClassDate: Date of the class.
-     - Hour: Time of the class.
      - Student_ID: Foreign key referencing the Student table.
      - Class_ID: Foreign key referencing the Class table.
    - **Purpose:** Records class schedules for individual students.
@@ -101,11 +100,13 @@ This system serves as a comprehensive database management tool for managing stud
    - **Purpose:** Establishes relationships between students and classes they are enrolled in.
 
 The system aims to facilitate efficient management of academic data and streamline processes related to student enrollment, class scheduling, teacher assignments, and curriculum management.
+***
 
 ### ERD and DSD Diagrams
 
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
+![img_1.png](assets/ERD.jpg)
+
+![img_2.png](assets/DSD.jpg)
 
 ### Design Decisions
 
@@ -129,8 +130,11 @@ In designing the database schema, careful consideration was given to the establi
 - **Class_ID:** This foreign key references the `Class` table's `Class_ID` column, establishing a relationship between the `StudentClass` table and the `Class` table to indicate which class the student is enrolled in.
 
 These foreign key relationships ensure the integrity of the database and maintain consistency between related tables, enabling accurate data retrieval and manipulation.
+***
 
-### Create Table Commands
+### Create Table and desc Commands
+#### Create Table Command
+
 
 ```sql
 CREATE TABLE Student
@@ -150,15 +154,15 @@ CREATE TABLE Teacher
   L_Name VARCHAR(10) NOT NULL,
   F_Name VARCHAR(10) NOT NULL,
   Title VARCHAR(10) NOT NULL,
-  Level INT NOT NULL,
+  Rank INT NOT NULL,
   PRIMARY KEY (Teacher_ID)
 );
 
 CREATE TABLE Subject
 (
   Subject_ID INT NOT NULL,
-  Name VARCHAR(10) NOT NULL,
-  Detail VARCHAR(10) NOT NULL,
+  Name VARCHAR(50) NOT NULL,
+  Detail VARCHAR(100) NOT NULL,
   PRIMARY KEY (Subject_ID)
 );
 
@@ -172,7 +176,7 @@ CREATE TABLE Classroom
 
 CREATE TABLE TeachAssign
 (
-  DateAssign VARCHAR(10) NOT NULL,
+  DateAssign DATE,
   Subject_ID INT NOT NULL,
   Teacher_ID INT NOT NULL,
   PRIMARY KEY (Subject_ID, Teacher_ID),
@@ -197,7 +201,6 @@ CREATE TABLE Class
 CREATE TABLE Schedule
 (
   ClassDate DATE NOT NULL,
-  Hour VARCHAR(10) NOT NULL,
   Schedule_ID INT NOT NULL,
   Student_ID INT NOT NULL,
   Class_ID INT NOT NULL,
@@ -215,13 +218,64 @@ CREATE TABLE StudentClass
   FOREIGN KEY (Class_ID) REFERENCES Class(Class_ID)
 );
 ```
+#### Desc Command
+![img_1.png](assets/desc.jpg)
+***
 
 ### Data Entry Methods
+- Data Generate file.
+- Text file.
+- Python script.
 
-[Insert screenshots of three selected data entry methods here]
 
+**Data Generate file:**
+
+![img_1.png](assets/image_generate_1.jpg)
+![img_1.png](assets/image_generate_2.jpg)
+![img_1.png](assets/image_generate_3.jpg)
+
+
+**Text file:**
+
+![img_1.png](assets/text_generate.jpg)
+
+**Python script:**
+```python
+import random
+import string
+
+# Function to generate a random string for L_Name, F_Name, and Title
+def random_string(length):
+    letters = string.ascii_letters
+    return ''.join(random.choice(letters) for _ in range(length))
+
+# Number of records to insert
+num_records = 500
+
+# Generate SQL insert queries
+queries = []
+for i in range(1, num_records + 1):
+    teacher_id = i
+    l_name = random_string(10)  # Generate a random string of length 10 for L_Name
+    f_name = random_string(10)  # Generate a random string of length 10 for F_Name
+    title = random_string(10)   # Generate a random string of length 10 for Title
+    level = random.randint(1, 10)  # Generate a random integer between 1 and 10 for Level
+    query = f"INSERT INTO Teacher (Teacher_ID, L_Name, F_Name, Title, Level) VALUES ({teacher_id}, '{l_name}', '{f_name}', '{title}', {level});"
+    queries.append(query)
+
+# Write queries to a file
+with open('insert_queries.sql', 'w') as f:
+    for query in queries:
+        f.write(query + '\n')
+```
+***
 ### Data Backup and Restoration
 
-[Insert screenshots of performing data backup and restoration here]
+![img_1.png](assets/backup_image.jpg)
+
+
+![img_1.png](assets/restore_image.jpg)
+
+
 
 ---

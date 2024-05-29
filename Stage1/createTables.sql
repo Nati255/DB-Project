@@ -15,15 +15,15 @@ CREATE TABLE Teacher
   L_Name VARCHAR(10) NOT NULL,
   F_Name VARCHAR(10) NOT NULL,
   Title VARCHAR(10) NOT NULL,
-  Level INT NOT NULL,
+  Rank INT NOT NULL,
   PRIMARY KEY (Teacher_ID)
 );
 
 CREATE TABLE Subject
 (
   Subject_ID INT NOT NULL,
-  Name VARCHAR(10) NOT NULL,
-  Detail VARCHAR(10) NOT NULL,
+  Name VARCHAR(50) NOT NULL,
+  Detail VARCHAR(100) NOT NULL,
   PRIMARY KEY (Subject_ID)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE Classroom
 
 CREATE TABLE TeachAssign
 (
-  DateAssign VARCHAR(10) NOT NULL,
+  DateAssign DATE,
   Subject_ID INT NOT NULL,
   Teacher_ID INT NOT NULL,
   PRIMARY KEY (Subject_ID, Teacher_ID),
@@ -62,7 +62,6 @@ CREATE TABLE Class
 CREATE TABLE Schedule
 (
   ClassDate DATE NOT NULL,
-  Hour VARCHAR(10) NOT NULL,
   Schedule_ID INT NOT NULL,
   Student_ID INT NOT NULL,
   Class_ID INT NOT NULL,
