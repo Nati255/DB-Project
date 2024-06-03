@@ -61,7 +61,7 @@ CREATE TABLE Class
 
 CREATE TABLE Schedule
 (
-  ClassDate DATE NOT NULL,
+  ClassDate VARCHAR(10) NOT NULL,
   Schedule_ID INT NOT NULL,
   Student_ID INT NOT NULL,
   Class_ID INT NOT NULL,
