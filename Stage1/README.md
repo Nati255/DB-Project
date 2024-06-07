@@ -12,12 +12,20 @@
 
 
 ## Table of Contents
+### stage 1
 1. [Introduction](#introduction)
 2. [ERD and DSD Diagrams](#erd-and-dsd-diagrams)
 3. [Design Decisions](#design-decisions)
 4. [Create Table Commands](#create-table-commands)
 5. [Data Entry Methods](#data-entry-methods)
 6. [Data Backup and Restoration](#data-backup-and-restoration)
+
+### stage 2
+1. [Queries Without Parameters](#Queries-Without-Parameters)
+2. [Queries With Parameters](#Queries-With-Parameters)
+3. [Delete Queries](#Delete-Queries)
+4. [Update Queries](#Update-Queries)
+5. [Constraints](#Constraints)
 
 ---
 
@@ -279,3 +287,82 @@ with open('insert_queries.sql', 'w') as f:
 
 
 ---
+
+# Stage 2 Report
+
+
+---
+
+## Queries Without Parameters
+
+### Query 1: [Hebrew Description of Query 1]
+![Query 1 Execution](assets/q1np.png)
+
+### Query 2: [Hebrew Description of Query 2]
+![Query 2 Execution](assets/q2np.png)
+
+### Query 3: [Hebrew Description of Query 3]
+![Query 3 Execution](assets/q3np.png)
+
+### Query 4: [Hebrew Description of Query 4]
+![Query 4 Execution](assets/q4np.png)
+
+## Queries With Parameters
+
+### Query 1: [Hebrew Description of Query 1 with Parameters]
+![Query 1 Execution](assets/q1p.jpg)
+![Query 1 Result](assets/q1rp.png)
+
+### Query 2: [Hebrew Description of Query 2 with Parameters]
+![Query 2 Execution](assets/q2p.png)
+![Query 2 Result](assets/q2rp.png)
+
+### Query 3: [Hebrew Description of Query 3 with Parameters]
+![Query 3 Execution](assets/q3p.png)
+![Query 3 Result](assets/q3rp.png)
+
+### Query 4: [Hebrew Description of Query 4 with Parameters]
+![Query 4 Execution](assets/q4p.png)
+![Query 4 Result](assets/q4rp.png)
+
+## Delete Queries
+
+### Delete Query 1: [Hebrew Description of Delete Query 1]
+![Delete Query 1 Execution](path/to/delete_query1_execution.png)
+![Before Delete Query 1](path/to/before_delete_query1.png)
+![After Delete Query 1](path/to/after_delete_query1.png)
+
+### Delete Query 2: [Hebrew Description of Delete Query 2]
+![Delete Query 2 Execution](path/to/delete_query2_execution.png)
+![Before Delete Query 2](path/to/before_delete_query2.png)
+![After Delete Query 2](path/to/after_delete_query2.png)
+
+## Update Queries
+
+### Update Query 1: [Hebrew Description of Update Query 1]
+![Update Query 1 Execution](path/to/update_query1_execution.png)
+![Before Update Query 1](path/to/before_update_query1.png)
+![After Update Query 1](path/to/after_update_query1.png)
+
+### Update Query 2: [Hebrew Description of Update Query 2]
+![Update Query 2 Execution](path/to/update_query2_execution.png)
+![Before Update Query 2](path/to/before_update_query2.png)
+![After Update Query 2](path/to/after_update_query2.png)
+
+## Constraints
+
+### Constraint 1: [Hebrew Description of Constraint 1]
+![Constraint 1 Execution](path/to/constraint1_execution.png)
+![Constraint 1 Error](path/to/constraint1_error.png)
+
+### Constraint 2: [Hebrew Description of Constraint 2]
+![Constraint 2 Execution](path/to/constraint2_execution.png)
+![Constraint 2 Error](path/to/constraint2_error.png)
+
+### Constraint 3: [Hebrew Description of Constraint 3]
+![Constraint 3 Execution](path/to/constraint3_execution.png)
+![Constraint 3 Error](path/to/constraint3_error.png)
+
+### Constraint 4: [Hebrew Description of Constraint 4]
+![Constraint 4 Execution](path/to/constraint4_execution.png)
+![Constraint 4 Error](path/to/constraint4_error.png)
