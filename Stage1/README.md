@@ -115,9 +115,9 @@ The system aims to facilitate efficient management of academic data and streamli
 
 ### ERD and DSD Diagrams
 
-![img_1.png](assets/ERD.jpg)
+![img_1.png](../assets/ERD.jpg)
 
-![img_2.png](assets/DSD.jpg)
+![img_2.png](../assets/DSD.jpg)
 
 ### Design Decisions
 
@@ -230,7 +230,7 @@ CREATE TABLE StudentClass
 );
 ```
 #### Desc Command
-![img_1.png](assets/desc.jpg)
+![img_1.png](../assets/desc.jpg)
 ***
 
 ### Data Entry Methods
@@ -241,14 +241,14 @@ CREATE TABLE StudentClass
 
 **Data Generate file:**
 
-![img_1.png](assets/image_generate_1.jpg)
-![img_1.png](assets/image_generate_2.jpg)
-![img_1.png](assets/image_generate_3.jpg)
+![img_1.png](../assets/image_generate_1.jpg)
+![img_1.png](../assets/image_generate_2.jpg)
+![img_1.png](../assets/image_generate_3.jpg)
 
 
 **Text file:**
 
-![img_1.png](assets/text_generate.jpg)
+![img_1.png](../assets/text_generate.jpg)
 
 **Python script:**
 ```python
@@ -282,10 +282,10 @@ with open('insert_queries.sql', 'w') as f:
 ***
 ### Data Backup and Restoration
 
-![img_1.png](assets/backup_image.jpg)
+![img_1.png](../assets/backup_image.jpg)
 
 
-![img_1.png](assets/restore_image.jpg)
+![img_1.png](../assets/restore_image.jpg)
 
 
 
@@ -299,73 +299,133 @@ with open('insert_queries.sql', 'w') as f:
 ## Queries Without Parameters
 
 ### Query 1: This query finds out how many students each teacher has on average. It first counts the students in each class and then averages these counts for each teacher. Finally, it shows the average number of students for each teacher, sorted by the teacher's ID.
-![Query 1 Execution](assets/q1np.png)
+![Query 1 Execution](../assets/q1np.png)
 
 ### Query 2: This query calculates the total capacity used for each room type. It first joins the Class and Classroom tables to get the room type and capacity for each class. Then, it sums the capacities for each room type and shows the total capacity used for each type of room.
-![Query 2 Execution](assets/q2np.png)
+![Query 2 Execution](../assets/q2np.png)
 
-### Query 3: [Hebrew Description of Query 3]
-![Query 3 Execution](assets/q3np.png)
+### Query 3: find all the students who are enrolled in courses during the summer and were born between May and June
+![Query 3 Execution](../assets/qnp.png)
 
 ### Query 4: This query finds the top three teachers with the highest average number of students per class. It starts by calculating the number of students each teacher has per class. Then, it averages these student counts for each teacher. Finally, it sorts the teachers by their average number of students per class in descending order and selects the top three.
-![Query 4 Execution](assets/q4np.png)
+![Query 4 Execution](../assets/q4np.png)
 
 ## Queries With Parameters
 
 ### Query 1: This query finds students who are in classes taught by a certain teacher during a specific time period. It lists each student's first name, last name, student ID, class ID, and the subject they are taking. The results are sorted by the students' last names and first names.
-![Query 1 Execution](assets/q1p.jpg)
-![Query 1 Result](assets/q1rp.png)
+![Query 1 Execution](../assets/q1p.jpg)
+![Query 1 Result](../assets/q1rp.png)
 
 ### Query 2: This query finds students who are taking a specific subject during a specific time period. It lists each student's first name, last name, student ID, the subject name, the period, and the teacher's first and last names. The results are sorted by the students' last names and first names.
-![Query 2 Execution](assets/q5p.png)
-![Query 2 Result](assets/q5rp.png)
+![Query 2 Execution](../assets/q5p.png)
+![Query 2 Result](../assets/q5rp.png)
 
 ### Query 3: This query tells us how many classes are scheduled in each type of classroom and within a certain size range. It lists classrooms by their IDs and types, along with their capacities. Then, it counts how many classes are held in each classroom within a specific size range. Finally, it sorts the classrooms from the smallest to the largest based on their capacities.
-![Query 3 Execution](assets/q3p.png)
-![Query 3 Result](assets/q3rp.png)
+![Query 3 Execution](../assets/q3p.png)
+![Query 3 Result](../assets/q3rp.png)
 
 ### Query 4: This query finds students and their class details, like the period, time, teacher's name, and subject, based on their birth month and year. It organizes the results by students' names.
-![Query 4 Execution](assets/q4p.png)
-![Query 4 Result](assets/q4rp.png)
+![Query 4 Execution](../assets/q4p.png)
+![Query 4 Result](../assets/q4rp.png)
 
 ## Delete Queries
 
-### Delete Query 1: [Hebrew Description of Delete Query 1]
-![Delete Query 1 Execution](path/to/delete_query1_execution.png)
-![Before Delete Query 1](path/to/before_delete_query1.png)
-![After Delete Query 1](path/to/after_delete_query1.png)
+### Delete Query 1: This query deletes classes from the 'Class' table that have the 'Summer' period and have fewer than 5 students enrolled in them.
 
-### Delete Query 2: [Hebrew Description of Delete Query 2]
-![Delete Query 2 Execution](path/to/delete_query2_execution.png)
-![Before Delete Query 2](path/to/before_delete_query2.png)
-![After Delete Query 2](path/to/after_delete_query2.png)
+#### Run the select query to see how much data there is of this type:
+![img_1.png](../assets/d12.png)
 
+#### Running the delete query:
+![img_1.png](../assets/d13.png)
+
+#### Running the table again and as you can see it dropped from 400 records to 334 (which is minus 66)
+![img_1.png](../assets/d14.png)
+
+### Delete Query 2: This query deletes students from the 'Student' table who are not enrolled in any classes.
+#### The table before the deletion:
+![img_1.png](../assets/d21.png)
+#### The delete query:
+![img_1.png](../assets/d22.png)
+#### Running the table after the deletion and as you can see 198 records were deleted:
+![img_1.png](../assets/d23.png)
 ## Update Queries
 
-### Update Query 1: [Hebrew Description of Update Query 1]
-![Update Query 1 Execution](path/to/update_query1_execution.png)
-![Before Update Query 1](path/to/before_update_query1.png)
-![After Update Query 1](path/to/after_update_query1.png)
+### Update Query 1: This query updates the capacity of 'Medium' type classrooms to 30, for classrooms that are used by more than 2 classes.
+#### Run the query before the update and as you can see there are 5 matching records:
+![img_1.png](../assets/u11.png)
+#### Running the update query:
+![img_1.png](../assets/u12.png)
+#### Run the query after the update and as you can see the capacity has changed to 30:
+![img_1.png](../assets/u13.png)
 
-### Update Query 2: [Hebrew Description of Update Query 2]
-![Update Query 2 Execution](path/to/update_query2_execution.png)
-![Before Update Query 2](path/to/before_update_query2.png)
-![After Update Query 2](path/to/after_update_query2.png)
+### Update Query 2: This query updates the 'RANK' of teachers by incrementing it by 1, for teachers who are assigned to more than 3 subjects.
+#### Run the query before the update:
+![img_1.png](../assets/u21.png)
+#### Running the update query:
+![img_1.png](../assets/u22.png)
+#### Run the query after the update and as you can see the RANK has changed to 3:
+![img_1.png](../assets/u23.png)
 
 ## Constraints
 
-### Constraint 1: [Hebrew Description of Constraint 1]
-![Constraint 1 Execution](path/to/constraint1_execution.png)
-![Constraint 1 Error](path/to/constraint1_error.png)
+### Constraint 1:  This query modifies the Teacher table to set a default value of 1 
+![Query 1 Execution](../assets/c1.png)
 
-### Constraint 2: [Hebrew Description of Constraint 2]
-![Constraint 2 Execution](path/to/constraint2_execution.png)
-![Constraint 2 Error](path/to/constraint2_error.png)
+#### A change occurred in the table
 
-### Constraint 3: [Hebrew Description of Constraint 3]
-![Constraint 3 Execution](path/to/constraint3_execution.png)
-![Constraint 3 Error](path/to/constraint3_error.png)
+```sql
+create table TEACHER
+(
+    TEACHER_ID NUMBER           not null
+        primary key,
+    L_NAME     VARCHAR2(10)     not null,
+    F_NAME     VARCHAR2(10)     not null,
+    TITLE      VARCHAR2(10)     not null,
+    RANK       NUMBER default 1 not null
+)
+```
 
-### Constraint 4: [Hebrew Description of Constraint 4]
-![Constraint 4 Execution](path/to/constraint4_execution.png)
-![Constraint 4 Error](path/to/constraint4_error.png)
+### Constraint 2:  This query modifies the TeachAssign table to make the DateAssign column NOT NULL.
+![Query 1 Execution](../assets/c2.png)
+
+#### A change occurred in the table
+
+```sql
+create table TEACHASSIGN
+(
+    DATEASSIGN DATE   not null,
+    SUBJECT_ID NUMBER not null
+        references SUBJECT,
+    TEACHER_ID NUMBER not null
+        references TEACHER,
+    primary key (SUBJECT_ID, TEACHER_ID)
+)
+```
+
+#### Run error on data that contradicts the constraint
+
+![Query 1 Execution](../assets/c21.png)
+
+### Constraint 3: This query adds a constraint to the Student table to ensure that the Gradesheats column cannot have negative values.
+![Query 1 Execution](../assets/c3.png)
+
+#### A change occurred in the table
+
+```sql
+create table STUDENT
+(
+    FIRST_NAME  VARCHAR2(10) not null,
+    STUDENT_ID  NUMBER       not null
+        primary key,
+    DATE_BIRTH  DATE         not null,
+    GRADESHEATS NUMBER       not null
+        constraint CHK_GRADESHEATS_NONNEGATIVE
+            check (Gradesheats >= 0),
+    ADDRESS     VARCHAR2(20) not null,
+    LAST_NAME   VARCHAR2(10) not null
+)
+```
+#### Run error on data that contradicts the constraint
+
+![Query 1 Execution](../assets/c31.png)
+
