@@ -16,7 +16,7 @@
 1. [Introduction](#introduction)
 2. [ERD and DSD Diagrams](#erd-and-dsd-diagrams)
 3. [Design Decisions](#design-decisions)
-4. [Create Table Commands](#create-table-commands)
+4. [Create Table and desc Commands](#Create-Table-and-desc-Commands)
 5. [Data Entry Methods](#data-entry-methods)
 6. [Data Backup and Restoration](#data-backup-and-restoration)
 
@@ -144,6 +144,7 @@ These foreign key relationships ensure the integrity of the database and maintai
 ***
 
 ### Create Table and desc Commands
+
 #### Create Table Command
 
 
