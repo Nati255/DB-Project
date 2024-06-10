@@ -1,7 +1,7 @@
 
 ---
 
-# Project Report - Stage 1
+# Project Report 
 
 
 ---
@@ -12,6 +12,7 @@
 
 
 ## Table of Contents
+### stage 1
 1. [Introduction](#introduction)
 2. [ERD and DSD Diagrams](#erd-and-dsd-diagrams)
 3. [Design Decisions](#design-decisions)
@@ -19,8 +20,18 @@
 5. [Data Entry Methods](#data-entry-methods)
 6. [Data Backup and Restoration](#data-backup-and-restoration)
 
+### stage 2
+1. [Queries Without Parameters](#Queries-Without-Parameters)
+2. [Queries With Parameters](#Queries-With-Parameters)
+3. [Delete Queries](#Delete-Queries)
+4. [Update Queries](#Update-Queries)
+5. [Constraints](#Constraints)
+
 ---
 
+ # Stage 1 Report
+
+---
 ### Introduction 
 
 This system serves as a comprehensive database management tool for managing students, teachers, classes, schedules, subjects, and classrooms in an educational institution. It enables efficient organization and tracking of academic data, including student information, class schedules, teacher assignments, and classroom details.
@@ -279,3 +290,82 @@ with open('insert_queries.sql', 'w') as f:
 
 
 ---
+
+# Stage 2 Report
+
+
+---
+
+## Queries Without Parameters
+
+### Query 1: This query finds out how many students each teacher has on average. It first counts the students in each class and then averages these counts for each teacher. Finally, it shows the average number of students for each teacher, sorted by the teacher's ID.
+![Query 1 Execution](assets/q1np.png)
+
+### Query 2: This query calculates the total capacity used for each room type. It first joins the Class and Classroom tables to get the room type and capacity for each class. Then, it sums the capacities for each room type and shows the total capacity used for each type of room.
+![Query 2 Execution](assets/q2np.png)
+
+### Query 3: [Hebrew Description of Query 3]
+![Query 3 Execution](assets/q3np.png)
+
+### Query 4: This query finds the top three teachers with the highest average number of students per class. It starts by calculating the number of students each teacher has per class. Then, it averages these student counts for each teacher. Finally, it sorts the teachers by their average number of students per class in descending order and selects the top three.
+![Query 4 Execution](assets/q4np.png)
+
+## Queries With Parameters
+
+### Query 1: This query finds students who are in classes taught by a certain teacher during a specific time period. It lists each student's first name, last name, student ID, class ID, and the subject they are taking. The results are sorted by the students' last names and first names.
+![Query 1 Execution](assets/q1p.jpg)
+![Query 1 Result](assets/q1rp.png)
+
+### Query 2: This query finds students who are taking a specific subject during a specific time period. It lists each student's first name, last name, student ID, the subject name, the period, and the teacher's first and last names. The results are sorted by the students' last names and first names.
+![Query 2 Execution](assets/q5p.png)
+![Query 2 Result](assets/q5rp.png)
+
+### Query 3: This query tells us how many classes are scheduled in each type of classroom and within a certain size range. It lists classrooms by their IDs and types, along with their capacities. Then, it counts how many classes are held in each classroom within a specific size range. Finally, it sorts the classrooms from the smallest to the largest based on their capacities.
+![Query 3 Execution](assets/q3p.png)
+![Query 3 Result](assets/q3rp.png)
+
+### Query 4: This query finds students and their class details, like the period, time, teacher's name, and subject, based on their birth month and year. It organizes the results by students' names.
+![Query 4 Execution](assets/q4p.png)
+![Query 4 Result](assets/q4rp.png)
+
+## Delete Queries
+
+### Delete Query 1: [Hebrew Description of Delete Query 1]
+![Delete Query 1 Execution](path/to/delete_query1_execution.png)
+![Before Delete Query 1](path/to/before_delete_query1.png)
+![After Delete Query 1](path/to/after_delete_query1.png)
+
+### Delete Query 2: [Hebrew Description of Delete Query 2]
+![Delete Query 2 Execution](path/to/delete_query2_execution.png)
+![Before Delete Query 2](path/to/before_delete_query2.png)
+![After Delete Query 2](path/to/after_delete_query2.png)
+
+## Update Queries
+
+### Update Query 1: [Hebrew Description of Update Query 1]
+![Update Query 1 Execution](path/to/update_query1_execution.png)
+![Before Update Query 1](path/to/before_update_query1.png)
+![After Update Query 1](path/to/after_update_query1.png)
+
+### Update Query 2: [Hebrew Description of Update Query 2]
+![Update Query 2 Execution](path/to/update_query2_execution.png)
+![Before Update Query 2](path/to/before_update_query2.png)
+![After Update Query 2](path/to/after_update_query2.png)
+
+## Constraints
+
+### Constraint 1: [Hebrew Description of Constraint 1]
+![Constraint 1 Execution](path/to/constraint1_execution.png)
+![Constraint 1 Error](path/to/constraint1_error.png)
+
+### Constraint 2: [Hebrew Description of Constraint 2]
+![Constraint 2 Execution](path/to/constraint2_execution.png)
+![Constraint 2 Error](path/to/constraint2_error.png)
+
+### Constraint 3: [Hebrew Description of Constraint 3]
+![Constraint 3 Execution](path/to/constraint3_execution.png)
+![Constraint 3 Error](path/to/constraint3_error.png)
+
+### Constraint 4: [Hebrew Description of Constraint 4]
+![Constraint 4 Execution](path/to/constraint4_execution.png)
+![Constraint 4 Error](path/to/constraint4_error.png)
