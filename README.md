@@ -30,7 +30,7 @@
 ### stage 3
 1. [Procedures](#procedures)
 2. [Functions](#functions)
-3. [Main Programs](#Main-Progrems)
+3. [Main Programs](#Main-Programs)
 
 ---
 
