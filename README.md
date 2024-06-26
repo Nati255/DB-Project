@@ -16,7 +16,7 @@
 1. [Introduction](#introduction)
 2. [ERD and DSD Diagrams](#erd-and-dsd-diagrams)
 3. [Design Decisions](#design-decisions)
-4. [Create Table Commands](#create-table-commands)
+4. [Create Table and desc Commands](#Create-Table-and-desc-Commands)
 5. [Data Entry Methods](#data-entry-methods)
 6. [Data Backup and Restoration](#data-backup-and-restoration)
 
@@ -26,6 +26,11 @@
 3. [Delete Queries](#Delete-Queries)
 4. [Update Queries](#Update-Queries)
 5. [Constraints](#Constraints)
+
+### stage 3
+1. [Procedures](#procedures)
+2. [Functions](#functions)
+3. [Main Programs](#Main-Programs)
 
 ---
 
@@ -144,6 +149,7 @@ These foreign key relationships ensure the integrity of the database and maintai
 ***
 
 ### Create Table and desc Commands
+
 #### Create Table Command
 
 
@@ -429,3 +435,27 @@ create table STUDENT
 
 ![Query 1 Execution](assets/c31.png)
 
+---
+
+# Stage 3 Report
+
+
+---
+
+## Procedures
+
+### Procedure 1:
+
+### Procedure 2:
+
+## Functions
+
+### Function 1:
+
+### Function 2:
+
+## Main Programs
+
+### Program 1:
+
+### Program 2:
