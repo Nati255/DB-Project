@@ -689,7 +689,7 @@ END;
 ```
 
 ### After we called the "period" and "Report" functions, they print the data separately. And at the end it prints how many courses in total there were in that period:
-#### Courses by period:
+#### Course by period:
 ![Query 1 Execution](assets/f2_2.png)
 #### A teacher in a certain course and how many students there are:
 ![Query 1 Execution](assets/p2.png)
