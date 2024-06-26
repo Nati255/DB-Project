@@ -27,6 +27,11 @@
 4. [Update Queries](#Update-Queries)
 5. [Constraints](#Constraints)
 
+### stage 3
+1. [Procedures](#procedures)
+2. [Functions](#functions)
+3. [Main Programs](#Main-Progrems)
+
 ---
 
  # Stage 1 Report
@@ -430,3 +435,27 @@ create table STUDENT
 
 ![Query 1 Execution](assets/c31.png)
 
+---
+
+# Stage 3 Report
+
+
+---
+
+## Procedures
+
+### Procedure 1:
+
+### Procedure 2:
+
+## Functions
+
+### Function 1:
+
+### Function 2:
+
+## Main Programs
+
+### Program 1:
+
+### Program 2:
