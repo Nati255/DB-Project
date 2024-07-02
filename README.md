@@ -444,18 +444,254 @@ create table STUDENT
 
 ## Procedures
 
-### Procedure 1:
+### Procedure 1: Updates the Rank field of teachers in the Teacher table based on the number of classes they are assigned.
+####
+```sql
+CREATE OR REPLACE PROCEDURE update_teacher_rank IS
+    CURSOR teacher_cursor IS
+        SELECT Teacher_ID, COUNT(Class_ID) AS Num_Classes
+        FROM Class
+        GROUP BY Teacher_ID;
 
-### Procedure 2:
+    v_teacher_id Teacher.Teacher_ID%TYPE;
+    v_num_classes NUMBER;
+BEGIN
+    OPEN teacher_cursor;
+    LOOP
+        FETCH teacher_cursor INTO v_teacher_id, v_num_classes;
+        EXIT WHEN teacher_cursor%NOTFOUND;
+
+        IF v_num_classes >= 5 THEN
+            UPDATE Teacher SET Rank = 3 WHERE Teacher_ID = v_teacher_id;
+        ELSIF v_num_classes >= 3 THEN
+            UPDATE Teacher SET Rank = 2 WHERE Teacher_ID = v_teacher_id;
+        END IF;
+    END LOOP;
+    CLOSE teacher_cursor;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred: ' || SQLERRM);
+END update_teacher_rank;
+
+```
+#### Before the update (only some lecturers)
+![Query 1 Execution](assets/p1_5.png)
+![Query 1 Execution](assets/p1_4.png)
+![Query 1 Execution](assets/p1_3.png)
+
+#### After the update (only some lecturers)
+![Query 1 Execution](assets/p1.png)
+![Query 1 Execution](assets/p1_1.png)
+![Query 1 Execution](assets/p1_2.png)
+
+### Procedure 2: Generates a report listing each teacher, their assigned subjects, and the number of students enrolled in each subject.
+```sql
+CREATE OR REPLACE PROCEDURE Generate_Student_Enrollment_Report AS
+    TYPE Enrollment_Record IS RECORD (
+        Teacher_ID Teacher.Teacher_ID%TYPE,
+        Teacher_Name VARCHAR2(50),
+        Subject_Name Subject.Name%TYPE,
+        Num_Students INT
+    );
+    TYPE Enrollment_Table IS TABLE OF Enrollment_Record INDEX BY PLS_INTEGER;
+    v_Enrollment_Table Enrollment_Table;
+
+    CURSOR c_Enrollment_Data IS
+        SELECT t.Teacher_ID, t.F_Name || ' ' || t.L_Name AS Teacher_Name, sub.Name AS Subject_Name, COUNT(sc.Student_ID) AS Num_Students
+        FROM Teacher t
+        JOIN Class c ON t.Teacher_ID = c.Teacher_ID
+        JOIN Subject sub ON c.Subject_ID = sub.Subject_ID
+        LEFT JOIN StudentClass sc ON c.Class_ID = sc.Class_ID
+        GROUP BY t.Teacher_ID, t.F_Name, t.L_Name, sub.Name;
+BEGIN
+    OPEN c_Enrollment_Data;
+    FETCH c_Enrollment_Data BULK COLLECT INTO v_Enrollment_Table;
+    CLOSE c_Enrollment_Data;
+
+    -- Output the report
+    FOR i IN v_Enrollment_Table.FIRST .. v_Enrollment_Table.LAST LOOP
+        DBMS_OUTPUT.PUT_LINE('Teacher: ' || v_Enrollment_Table(i).Teacher_Name ||
+                             ', Subject: ' || v_Enrollment_Table(i).Subject_Name ||
+                             ', Number of Students: ' || v_Enrollment_Table(i).Num_Students);
+    END LOOP;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error occurred: ' || SQLERRM);
+        ROLLBACK;
+END Generate_Student_Enrollment_Report;
+
+```
+#### Part of the output you can see that each lecturer is told what the course is and how many students are in the course:
+![Query 1 Execution](assets/p2.png)
 
 ## Functions
 
-### Function 1:
+### Function 1: Retrieves students' first names, last names, and calculates their ages based on their date of birth. It then categorizes them into specified age groups.
+```sql
+CREATE OR REPLACE FUNCTION get_students_by_age_group(
+    min_age IN NUMBER,
+    max_age IN NUMBER,
+    counta OUT INT
+) RETURN SYS_REFCURSOR IS
+    student_cursor SYS_REFCURSOR;
+    current_year NUMBER := EXTRACT(YEAR FROM SYSDATE);
+    student_age NUMBER;
+    fname VARCHAR(20);
+    lname VARCHAR(20);
+    count_record INT := 0;
+BEGIN
+    OPEN student_cursor FOR
+    SELECT First_Name, Last_Name, EXTRACT(YEAR FROM Date_Birth) AS Birth_Year
+    FROM Student;
 
-### Function 2:
+    LOOP
+        FETCH student_cursor INTO fname, lname, student_age;
+        EXIT WHEN student_cursor%NOTFOUND;
+
+        student_age := current_year - student_age;
+
+        IF student_age >= min_age AND student_age <= max_age THEN
+            count_record := count_record + 1;
+            DBMS_OUTPUT.PUT_LINE('Student ' || fname || ' ' || lname || ' Age: ' || student_age);
+        END IF;
+    END LOOP;
+    CLOSE student_cursor;
+
+    -- Set the OUT parameter
+    counta := count_record;
+
+    -- Reopen the cursor to return the results
+    OPEN student_cursor FOR
+    SELECT First_Name, Last_Name, EXTRACT(YEAR FROM Date_Birth) AS Birth_Year
+    FROM Student
+    WHERE (current_year - EXTRACT(YEAR FROM Date_Birth)) BETWEEN min_age AND max_age;
+
+    RETURN student_cursor;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No students found in the specified age group');
+        counta := 0;  -- Set OUT parameter to 0 in case of no data found
+        RETURN NULL;
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred: ' || SQLERRM);
+        counta := -1;  -- Set OUT parameter to -1 in case of an error
+        RETURN NULL;
+END get_students_by_age_group;
+/
+
+```
+#### The input is "minimum age" 18 and "maximum age" 19:
+![Query 1 Execution](assets/f1_1.png)
+#### Output of some students:
+![Query 1 Execution](assets/f1_2.png)
+### Function 2: This function is designed to provide detailed information about classes based on a specified period, and handling potential errors 
+```sql
+CREATE OR REPLACE FUNCTION get_class_details_by_period(
+    p_period IN VARCHAR2
+) RETURN SYS_REFCURSOR IS
+    class_cursor SYS_REFCURSOR;
+    class_id NUMBER;
+    subject_name VARCHAR2(50);
+    teacher_name VARCHAR2(30);
+BEGIN
+    OPEN class_cursor FOR
+    SELECT C.Class_ID, Sub.Name AS Subject_Name, T.F_Name || ' ' || T.L_Name AS Teacher_Name
+    FROM Class C
+    JOIN Subject Sub ON C.Subject_ID = Sub.Subject_ID
+    JOIN Teacher T ON C.Teacher_ID = T.Teacher_ID
+    WHERE C.PERIODD = p_period;
+
+    LOOP
+        FETCH class_cursor INTO class_id, subject_name, teacher_name;
+        EXIT WHEN class_cursor%NOTFOUND;
+
+        IF subject_name IS NULL THEN
+            DBMS_OUTPUT.PUT_LINE('Subject name is missing for class ID: ' || class_id);
+        ELSIF teacher_name IS NULL THEN
+            DBMS_OUTPUT.PUT_LINE('Teacher name is missing for class ID: ' || class_id);
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Class ID: ' || class_id || ', Subject: ' || subject_name || ', Teacher: ' || teacher_name);
+        END IF;
+    END LOOP;
+    CLOSE class_cursor;
+
+    OPEN class_cursor FOR
+    SELECT C.Class_ID, Sub.Name AS Subject_Name, T.F_Name || ' ' || T.L_Name AS Teacher_Name
+    FROM Class C
+    JOIN Subject Sub ON C.Subject_ID = Sub.Subject_ID
+    JOIN Teacher T ON C.Teacher_ID = T.Teacher_ID
+    WHERE C.PERIODD = p_period;
+
+    RETURN class_cursor;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No classes found for the specified period');
+        RETURN NULL;
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred: ' || SQLERRM);
+        RETURN NULL;
+END get_class_details_by_period;
+
+```
+#### Inserting a "summer" variable into p_period:
+![Query 1 Execution](assets/f2_1.png)
+#### Some of the courses taught in the summer:
+![Query 1 Execution](assets/f2_2.png)
+
 
 ## Main Programs
 
-### Program 1:
+### Program 1: A program that uses the function "get_students_by_age_group" and the procedure "update_teacher_rank;"
+```sql
+DECLARE
+    student_cursor SYS_REFCURSOR;
+    min_age NUMBER := 18;
+    max_age NUMBER := 19;
+    counta INT;
+BEGIN
+    -- Call the function
+    student_cursor := get_students_by_age_group(min_age, max_age, counta);
 
-### Program 2:
+    -- Print the number of records
+    DBMS_OUTPUT.PUT_LINE('Number of students in the age group ' || min_age || ' to ' || max_age || ': ' || counta);
+
+    update_teacher_rank;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred: ' || SQLERRM);
+END;
+
+```
+#### After we called the "age" function and made an update in the "rank" procedure, it prints how many records met the age conditions
+![Query 1 Execution](assets/mp1.png)
+
+
+### Program 2: A program that uses the function "get_class_details_by_period" and the procedure "Generate_Student_Enrollment_Report;"
+```sql
+DECLARE
+    class_details_cursor SYS_REFCURSOR;
+    counta INT;
+BEGIN
+    -- Call the function to get class details by period
+    class_details_cursor := get_class_details_by_period('Summer', counta);
+
+
+    -- Call the procedure to generate student enrollment report
+    Generate_Student_Enrollment_Report;
+    
+        -- Display the results
+    DBMS_OUTPUT.PUT_LINE('Number of classes in the period group: '|| counta);
+    
+END;
+
+```
+
+### After we called the "period" and "Report" functions, they print the data separately. And at the end it prints how many courses in total there were in that period:
+#### Course by period:
+![Query 1 Execution](assets/f2_2.png)
+#### A teacher in a certain course and how many students there are:
+![Query 1 Execution](assets/p2.png)
+#### The amount of matching records:
+![Query 1 Execution](assets/mp2.png)
