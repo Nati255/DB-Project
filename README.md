@@ -33,7 +33,7 @@
 3. [Main Programs](#Main-Programs)
 
 ### stage 4
-1. [ERD & DSD](#erd-&-dsd)
+1. [ERD & DSD](#erd-dsd)
 2. [Integration Decisions](#integration-decisions)
 3. [The Process and Commands](#the-process-and-commands)
 4. [Views](#Views)
