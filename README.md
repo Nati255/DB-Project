@@ -32,6 +32,13 @@
 2. [Functions](#functions)
 3. [Main Programs](#Main-Programs)
 
+### stage 4
+1. [ERD & DSD](#erd-&-dsd)
+2. [Integration Decisions](#integration-decisions)
+3. [The Process and Commands](#the-process-and-commands)
+4. [Views](#Views)
+5. [Views Queries](#views-queries)
+
 ---
 
  # Stage 1 Report
@@ -695,3 +702,213 @@ END;
 ![Query 1 Execution](assets/p2.png)
 #### The amount of matching records:
 ![Query 1 Execution](assets/mp2.png)
+
+---
+ # Stage 4 Report
+
+---
+
+## ERD & DSD 
+### We used the backup of the second wing and built the dsd diagram through plsql:
+![Query 1 Execution](assets/dsd1.png)
+
+### By this dsd we built their erd
+![Query 1 Execution](assets/ERD_friend_img.png)
+
+### After we have built erd we will extract the dsd from it and as you can see it is exactly the same as the dsd we extracted from plsql
+![Query 1 Execution](assets/DSD_friend_img.png)
+
+### After that we did an integration between the two wings
+#### ERD:
+![Query 1 Execution](assets/ERD-integration.png)
+#### ERD:
+![Query 1 Execution](assets/DSD_integration_img.png)
+
+## Integration Decisions
+
+### Step 1: Common Entity Alignment
+We identified a common entity that provides us with the same data in both databases. Our entity is called `Subject` and their entity is called `Subjects_Taught`.
+
+- **Action:** Delete the `Subjects_Taught` entity since it's redundant.
+- **Result:** This also necessitated the deletion of the `teach` entity, which represented a many-to-many relationship between `Subjects_Taught` and `Employee`.
+
+### Step 2: Enhancing Teacher Entity
+To integrate the `Employee` entity from their database, we will enhance our `Teacher` entity.
+
+- **Action:** Add a new column `Employee_ID` to the `Teacher` entity to represent the teacher's ID number as an employee.
+
+## The Process and Commands
+### First step: delete the teach table that contains a foreign key to Subjects_Taught:
+#### The command:
+```sql
+drop table TEACH;
+```
+### Second step: delete the table Subjects_Taught:
+#### The command:
+```sql
+drop table SUBJECTS_TAUGHT;
+```
+### Third step: We will insert a new column into the teacher table:
+#### The command:
+```sql
+ALTER TABLE Teacher
+ADD Employee_ID INT;
+
+ALTER TABLE Teacher
+ADD CONSTRAINT fk_employee
+FOREIGN KEY (Employee_ID) REFERENCES Employee(Employee_ID);
+```
+### Fourth step: We will enter the data into the Employee_ID column in the teacher entity:
+#### The command:
+```sql
+-- update Teacher with Employee_IDs between 1500 and 2000
+
+-- First, create a temporary table to store valid Employee_IDs
+CREATE GLOBAL TEMPORARY TABLE Temp_Employee_IDs (
+    Employee_ID INT
+) ON COMMIT DELETE ROWS;
+
+-- Insert valid Employee_IDs into the temporary table
+INSERT INTO Temp_Employee_IDs (Employee_ID)
+SELECT Employee_ID
+FROM Employee
+WHERE Job_Title = 'Worker'
+  AND Employee_ID BETWEEN 1500 AND 2000;
+
+-- Update Teacher table with these Employee_IDs
+UPDATE Teacher T
+SET Employee_ID = (
+    SELECT TE.Employee_ID
+    FROM Temp_Employee_IDs TE
+    WHERE TE.Employee_ID = T.Teacher_ID
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM Temp_Employee_IDs TE
+    WHERE TE.Employee_ID = T.Teacher_ID
+);
+
+-- Drop the temporary table as it is no longer needed
+DROP TABLE Temp_Employee_IDs;
+```
+
+## Views
+
+### A view from the original wing:
+#### View : Student and Class Details . This view combines student details with their class schedules.
+```sql
+CREATE OR REPLACE VIEW Student_Class_Details AS
+SELECT 
+    S.Student_ID,
+    S.First_Name,
+    S.Last_Name,
+    C.Class_ID,
+    C.PERIODD,
+    C.Time,
+    CL.Classroom_ID,
+    Sub.Name AS Subject_Name
+FROM 
+    Student S
+JOIN 
+    StudentClass SC ON S.Student_ID = SC.Student_ID
+JOIN 
+    Class C ON SC.Class_ID = C.Class_ID
+JOIN 
+    Subject Sub ON C.Subject_ID = Sub.Subject_ID
+JOIN 
+    Classroom CL ON C.Classroom_ID = CL.Classroom_ID;
+
+```
+#### Output of select *:
+![Query 1 Execution](assets/v1.png)
+### A view from the wing we received:
+#### View : Employee and Budget Details. This view provides information about employees and their associated budgets.
+```sql
+CREATE OR REPLACE VIEW Employee_Budget_Details AS
+SELECT
+    E.Employee_ID,
+    E.Employee_Name,
+    B.Budget_Code,
+    B.Budget_Amount,
+    B.Expense_Category,
+    B.BUDGET_YEAR
+FROM
+    Employee E
+JOIN
+    Budget B ON E.Employee_ID = B.Employee_ID;
+```
+#### Output of select *:
+![Query 1 Execution](assets/v2.png)
+## Views Queries
+
+### Queries about the view of our wing:
+#### Query 1 : Retrieve all students with their class schedules and subjects.
+```sql
+SELECT 
+    Student_ID, 
+    First_Name, 
+    Last_Name, 
+    Class_ID, 
+    PERIODD, 
+    Time, 
+    Classroom_ID, 
+    Subject_Name
+FROM 
+    Student_Class_Details
+ORDER BY 
+    Student_ID, Class_ID;
+
+```
+#### Output:
+![Query 1 Execution](assets/v11.png)
+#### Query 2 : Find all classes that a specific student is enrolled in.
+```sql
+SELECT 
+    Class_ID, 
+    PERIODD, 
+    Time, 
+    Subject_Name
+FROM 
+    Student_Class_Details
+WHERE 
+    Student_ID = &<name="Id:">
+ORDER BY 
+    Class_ID;
+
+```
+#### Output:
+![Query 1 Execution](assets/v12.png)
+
+### Queries about the view of the wing we received:
+#### Query 1: Retrieve all employees with their budget details.
+```sql
+SELECT
+    Employee_ID,
+    Employee_Name,
+    Budget_Code,
+    Budget_Amount,
+    Expense_Category,
+    BUDGET_YEAR
+FROM
+    Employee_Budget_Details
+ORDER BY
+    Employee_ID, Budget_Code;
+```
+#### Output:
+![Query 1 Execution](assets/v21.png)
+#### Query 2: Find budget details for a specific employee.
+```sql
+SELECT
+    Budget_Code,
+    Budget_Amount,
+    Expense_Category,
+    Budget_Year
+FROM
+    Employee_Budget_Details
+WHERE
+    Employee_ID = &<name="employee id:">
+ORDER BY
+    Budget_Year;
+```
+#### Output:
+![Query 1 Execution](assets/v22.png)
