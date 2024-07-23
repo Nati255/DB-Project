@@ -712,7 +712,7 @@ END;
 ### We used the backup of the second wing and built the dsd diagram through plsql:
 ![Query 1 Execution](assets/dsd1.png)
 
-### By this dsd we built their erd
+### By this dsd we built their erd.
 ![Query 1 Execution](assets/ERD_friend_img.png)
 
 ### After we have built erd we will extract the dsd from it and as you can see it is exactly the same as the dsd we extracted from plsql
@@ -721,7 +721,7 @@ END;
 ### After that we did an integration between the two wings
 #### ERD:
 ![Query 1 Execution](assets/ERD-integration.png)
-#### ERD:
+#### DSD:
 ![Query 1 Execution](assets/DSD_integration_img.png)
 
 ## Integration Decisions
