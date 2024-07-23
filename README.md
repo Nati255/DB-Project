@@ -33,7 +33,7 @@
 3. [Main Programs](#Main-Programs)
 
 ### stage 4
-1. [ERD & DSD](#erd-dsd)
+1. [ERD and DSD](#Erd-and-Dsd)
 2. [Integration Decisions](#integration-decisions)
 3. [The Process and Commands](#the-process-and-commands)
 4. [Views](#Views)
@@ -708,7 +708,7 @@ END;
 
 ---
 
-## ERD & DSD 
+## ERD and DSD 
 ### We used the backup of the second wing and built the dsd diagram through plsql:
 ![Query 1 Execution](assets/dsd1.png)
 
