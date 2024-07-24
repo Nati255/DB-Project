@@ -709,6 +709,8 @@ END;
 ---
 
 ## ERD and DSD 
+### Our ERD:
+![Query 1 Execution](assets/ERD.jpg)
 ### We used the backup of the second wing and built the dsd diagram through plsql:
 ![Query 1 Execution](assets/dsd1.png)
 
